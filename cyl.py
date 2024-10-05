@@ -21,7 +21,6 @@ def draw_cylinder(ax, radius, height, color):
     # Plot top circle at z=height
     ax.add_collection3d(Poly3DCollection([list(zip(radius * np.cos(theta), radius * np.sin(theta), np.full_like(theta, height)))], color=color, alpha=0.7))
 
-
 # Initialize the number of cylinders and randomized values
 num_cylinders = 5
 cylinders = []
@@ -34,30 +33,51 @@ for _ in range(num_cylinders):
         'color': [random.random(), random.random(), random.random()]
     })
 
+# Place the graphic at the top of the app
 st.title("Cylindrical Volume Generator")
 
-# Streamlit slider controls for each cylinder
-for i, cylinder in enumerate(cylinders):
-    st.subheader(f"Cylinder {i + 1}")
-    cylinder['radius'] = st.slider(f"Radius (Cylinder {i + 1})", min_value=0.5, max_value=10.0, value=cylinder['radius'], step=0.1)
-    cylinder['height'] = st.slider(f"Height (Cylinder {i + 1})", min_value=1.0, max_value=20.0, value=cylinder['height'], step=0.1)
-    
-    color = st.color_picker(f"Choose Color (Cylinder {i + 1})", "#%02x%02x%02x" % tuple(int(c*255) for c in cylinder['color']))
-    cylinder['color'] = [int(color.lstrip("#")[i:i+2], 16)/255 for i in (0, 2, 4)]  # Convert hex to RGB
-
-# Plot the cylinders
+# Plot the cylinders at the top
 fig = plt.figure(figsize=(6, 6))
 ax = fig.add_subplot(111, projection='3d')
 
 for cylinder in cylinders:
     draw_cylinder(ax, cylinder['radius'], cylinder['height'], cylinder['color'])
 
-ax.set_xlim([-10, 10])
-ax.set_ylim([-10, 10])
-ax.set_zlim([0, 30])
-ax.set_xlabel('X')
-ax.set_ylabel('Y')
-ax.set_zlabel('Z')
+# Remove the grid, axis ticks, and labels
+ax.grid(False)  # Disable grid
+ax.set_xticks([])  # Remove x-axis ticks
+ax.set_yticks([])  # Remove y-axis ticks
+ax.set_zticks([])  # Remove z-axis ticks
+ax.set_axis_off()  # Optionally, hide the entire axis frame
 
 # Display the plot
+st.pyplot(fig)
+
+# Streamlit sidebar for sliders and controls
+st.sidebar.header("Control Cylinders")
+
+# Streamlit slider controls for each cylinder
+for i, cylinder in enumerate(cylinders):
+    st.sidebar.subheader(f"Cylinder {i + 1}")
+    cylinder['radius'] = st.sidebar.slider(f"Radius (Cylinder {i + 1})", min_value=0.5, max_value=10.0, value=cylinder['radius'], step=0.1)
+    cylinder['height'] = st.sidebar.slider(f"Height (Cylinder {i + 1})", min_value=1.0, max_value=20.0, value=cylinder['height'], step=0.1)
+    
+    color = st.sidebar.color_picker(f"Choose Color (Cylinder {i + 1})", "#%02x%02x%02x" % tuple(int(c*255) for c in cylinder['color']))
+    cylinder['color'] = [int(color.lstrip("#")[i:i+2], 16)/255 for i in (0, 2, 4)]  # Convert hex to RGB
+
+# Redraw the plot after adjustments
+fig = plt.figure(figsize=(6, 6))
+ax = fig.add_subplot(111, projection='3d')
+
+for cylinder in cylinders:
+    draw_cylinder(ax, cylinder['radius'], cylinder['height'], cylinder['color'])
+
+# Remove the grid, axis ticks, and labels again
+ax.grid(False)
+ax.set_xticks([])
+ax.set_yticks([])
+ax.set_zticks([])
+ax.set_axis_off()
+
+# Display the updated plot
 st.pyplot(fig)
