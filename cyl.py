@@ -51,6 +51,9 @@ for i, cylinder in enumerate(cylinders):
 fig = plt.figure(figsize=(6, 6))
 ax = fig.add_subplot(111, projection='3d')
 
+# Set the background of the figure to white (or transparent)
+ax.set_facecolor((1, 1, 1, 0))  # Set to transparent background
+
 for cylinder in cylinders:
     draw_cylinder(ax, cylinder['radius'], cylinder['height'], cylinder['color'])
 
