@@ -48,11 +48,11 @@ for i, cylinder in enumerate(cylinders):
     cylinder['color'] = [int(color.lstrip("#")[i:i+2], 16)/255 for i in (0, 2, 4)]  # Convert hex to RGB
 
 # Plot the cylinders at the top after interaction
-fig = plt.figure(figsize=(6, 6))
+fig = plt.figure(figsize=(6, 6), facecolor=(1, 1, 1, 0))  # Set the whole figure's background to transparent
 ax = fig.add_subplot(111, projection='3d')
 
-# Set the background of the figure to white (or transparent)
-ax.set_facecolor((1, 1, 1, 0))  # Set to transparent background
+# Set the background of the axis to transparent
+ax.set_facecolor((1, 1, 1, 0))  # Set to transparent background for the axis
 
 for cylinder in cylinders:
     draw_cylinder(ax, cylinder['radius'], cylinder['height'], cylinder['color'])
@@ -64,5 +64,5 @@ ax.set_yticks([])  # Remove y-axis ticks
 ax.set_zticks([])  # Remove z-axis ticks
 ax.set_axis_off()  # Optionally, hide the entire axis frame
 
-# Display the plot once
+# Display the plot once with a transparent background
 st.pyplot(fig)
