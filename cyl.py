@@ -33,25 +33,7 @@ for _ in range(num_cylinders):
         'color': [random.random(), random.random(), random.random()]
     })
 
-# Place the graphic at the top of the app
 st.title("Cylindrical Volume Generator")
-
-# Plot the cylinders at the top
-fig = plt.figure(figsize=(6, 6))
-ax = fig.add_subplot(111, projection='3d')
-
-for cylinder in cylinders:
-    draw_cylinder(ax, cylinder['radius'], cylinder['height'], cylinder['color'])
-
-# Remove the grid, axis ticks, and labels
-ax.grid(False)  # Disable grid
-ax.set_xticks([])  # Remove x-axis ticks
-ax.set_yticks([])  # Remove y-axis ticks
-ax.set_zticks([])  # Remove z-axis ticks
-ax.set_axis_off()  # Optionally, hide the entire axis frame
-
-# Display the plot
-st.pyplot(fig)
 
 # Streamlit sidebar for sliders and controls
 st.sidebar.header("Control Cylinders")
@@ -65,19 +47,19 @@ for i, cylinder in enumerate(cylinders):
     color = st.sidebar.color_picker(f"Choose Color (Cylinder {i + 1})", "#%02x%02x%02x" % tuple(int(c*255) for c in cylinder['color']))
     cylinder['color'] = [int(color.lstrip("#")[i:i+2], 16)/255 for i in (0, 2, 4)]  # Convert hex to RGB
 
-# Redraw the plot after adjustments
+# Plot the cylinders at the top after interaction
 fig = plt.figure(figsize=(6, 6))
 ax = fig.add_subplot(111, projection='3d')
 
 for cylinder in cylinders:
     draw_cylinder(ax, cylinder['radius'], cylinder['height'], cylinder['color'])
 
-# Remove the grid, axis ticks, and labels again
-ax.grid(False)
-ax.set_xticks([])
-ax.set_yticks([])
-ax.set_zticks([])
-ax.set_axis_off()
+# Remove the grid, axis ticks, and labels
+ax.grid(False)  # Disable grid
+ax.set_xticks([])  # Remove x-axis ticks
+ax.set_yticks([])  # Remove y-axis ticks
+ax.set_zticks([])  # Remove z-axis ticks
+ax.set_axis_off()  # Optionally, hide the entire axis frame
 
-# Display the updated plot
+# Display the plot once
 st.pyplot(fig)
